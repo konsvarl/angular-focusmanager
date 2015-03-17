@@ -362,8 +362,8 @@ module.service('focusQuery', function () {
     }
 
     function sortByTabIndex(a, b) {
-        var aTabIndex = a.getAttribute(consts.FOCUS_INDEX) || Number.POSITIVE_INFINITY;
-        var bTabIndex = b.getAttribute(consts.FOCUS_INDEX) || Number.POSITIVE_INFINITY;
+        var aTabIndex = parseInt(a.getAttribute(consts.FOCUS_INDEX), 10) || Number.POSITIVE_INFINITY;
+        var bTabIndex = parseInt(b.getAttribute(consts.FOCUS_INDEX), 10) || Number.POSITIVE_INFINITY;
 
         if (aTabIndex < bTabIndex) {
             return -1;
@@ -375,8 +375,8 @@ module.service('focusQuery', function () {
     }
 
     function sortByGroupIndex(a, b) {
-        var aGroupIndex = a.getAttribute(consts.FOCUS_GROUP_INDEX) || Number.POSITIVE_INFINITY;
-        var bGroupIndex = b.getAttribute(consts.FOCUS_GROUP_INDEX) || Number.POSITIVE_INFINITY;
+        var aGroupIndex = parseInt(a.getAttribute(consts.FOCUS_GROUP_INDEX), 10) || Number.POSITIVE_INFINITY;
+        var bGroupIndex = parseInt(b.getAttribute(consts.FOCUS_GROUP_INDEX), 10) || Number.POSITIVE_INFINITY;
 
         if (aGroupIndex < bGroupIndex) {
             return -1;
