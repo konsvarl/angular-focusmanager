@@ -1,5 +1,5 @@
 /*
-* angular-focus-manager 0.2.9
+* angular-focus-manager 0.2.10
 * Obogo (c) 2015
 * https://github.com/webux/angular-focusmanager
 * License: MIT.
