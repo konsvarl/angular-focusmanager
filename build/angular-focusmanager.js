@@ -1,5 +1,5 @@
 /*
-* angular-focus-manager 0.2.7
+* angular-focus-manager 0.2.8
 * Obogo (c) 2015
 * https://github.com/webux/angular-focusmanager
 * License: MIT.
@@ -184,12 +184,10 @@
             var box = elem.getBoundingClientRect();
             var body = document.body;
             var docElem = document.documentElement;
-            var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
-            var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
             var clientTop = docElem.clientTop || body.clientTop || 0;
             var clientLeft = docElem.clientLeft || body.clientLeft || 0;
-            var top = box.top + scrollTop - clientTop;
-            var left = box.left + scrollLeft - clientLeft;
+            var top = box.top - clientTop;
+            var left = box.left - clientLeft;
             return {
                 top: Math.round(top),
                 left: Math.round(left),
@@ -197,7 +195,7 @@
                 height: box.height
             };
         }
-        var updateDisplay = utils.debounce(function(el, activeElement) {
+        var _updateDisplay = function(el, activeElement) {
             var style = el.style;
             if (activeElement && focusManager.canReceiveFocus(activeElement)) {
                 var rect = getOffsetRect(activeElement);
@@ -209,16 +207,19 @@
             } else {
                 style.display = "none";
             }
-        }, 10);
+        };
+        var updateDisplay = utils.debounce(_updateDisplay, 10);
         return {
             scope: true,
             replace: true,
             link: function(scope, element, attrs) {
                 var timer;
                 var el = element[0];
+                var targetEl;
                 el.style.display = "none";
                 document.addEventListener("focus", function(evt) {
                     clearTimeout(timer);
+                    targetEl = evt.target;
                     updateDisplay(el, evt.target);
                 }, true);
                 document.addEventListener("blur", function(evt) {
@@ -226,6 +227,11 @@
                         updateDisplay(el);
                     });
                 }, true);
+                var onUpdate = function() {
+                    _updateDisplay(el, targetEl);
+                };
+                window.addEventListener("scroll", onUpdate);
+                window.addEventListener("resize", onUpdate);
             },
             template: '<div class="focus-highlight"></div>'
         };
@@ -1068,8 +1074,8 @@
             return list;
         }
         function sortByTabIndex(a, b) {
-            var aTabIndex = a.getAttribute(consts.FOCUS_INDEX) || Number.POSITIVE_INFINITY;
-            var bTabIndex = b.getAttribute(consts.FOCUS_INDEX) || Number.POSITIVE_INFINITY;
+            var aTabIndex = parseInt(a.getAttribute(consts.FOCUS_INDEX), 10) || Number.POSITIVE_INFINITY;
+            var bTabIndex = parseInt(b.getAttribute(consts.FOCUS_INDEX), 10) || Number.POSITIVE_INFINITY;
             if (aTabIndex < bTabIndex) {
                 return -1;
             }
@@ -1079,8 +1085,8 @@
             return 0;
         }
         function sortByGroupIndex(a, b) {
-            var aGroupIndex = a.getAttribute(consts.FOCUS_GROUP_INDEX) || Number.POSITIVE_INFINITY;
-            var bGroupIndex = b.getAttribute(consts.FOCUS_GROUP_INDEX) || Number.POSITIVE_INFINITY;
+            var aGroupIndex = parseInt(a.getAttribute(consts.FOCUS_GROUP_INDEX), 10) || Number.POSITIVE_INFINITY;
+            var bGroupIndex = parseInt(b.getAttribute(consts.FOCUS_GROUP_INDEX), 10) || Number.POSITIVE_INFINITY;
             if (aGroupIndex < bGroupIndex) {
                 return -1;
             }
