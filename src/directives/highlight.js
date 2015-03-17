@@ -22,7 +22,7 @@ module.directive('focusHighlight', function (focusManager) {
         var top = box.top - clientTop;
         var left = box.left - clientLeft;
 
-        return { top: Math.round(top), left: Math.round(left), width: box.width, height: box.height };
+        return {top: Math.round(top), left: Math.round(left), width: box.width, height: box.height};
     }
 
     var _updateDisplay = function (el, activeElement) {
@@ -61,8 +61,14 @@ module.directive('focusHighlight', function (focusManager) {
                 });
             }, true);
 
-            var onUpdate = function(){
-                _updateDisplay(el, targetEl);
+            var updateTimer;
+            var onUpdate = function () {
+                element.addClass('focus-highlight-disabled');
+                _updateDisplay(element[0], targetEl);
+                clearTimeout(updateTimer);
+                updateTimer = setTimeout(function () {
+                    element.removeClass('focus-highlight-disabled');
+                }, 10);
             };
 
             window.addEventListener('scroll', onUpdate);
