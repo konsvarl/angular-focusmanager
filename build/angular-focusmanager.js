@@ -1,5 +1,5 @@
 /*
-* angular-focus-manager 0.2.8
+* angular-focus-manager 0.2.9
 * Obogo (c) 2015
 * https://github.com/webux/angular-focusmanager
 * License: MIT.
@@ -227,8 +227,14 @@
                         updateDisplay(el);
                     });
                 }, true);
+                var updateTimer;
                 var onUpdate = function() {
-                    _updateDisplay(el, targetEl);
+                    element.addClass("focus-highlight-disabled");
+                    _updateDisplay(element[0], targetEl);
+                    clearTimeout(updateTimer);
+                    updateTimer = setTimeout(function() {
+                        element.removeClass("focus-highlight-disabled");
+                    }, 10);
                 };
                 window.addEventListener("scroll", onUpdate);
                 window.addEventListener("resize", onUpdate);
