@@ -27,12 +27,11 @@ a:focus, a:active, a:hover {
 }
 
 .focus-highlight {
-    position: absolute;
+    position: fixed;
     -webkit-transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
     transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
     outline: 2px solid #FF0000;
     outline-offset: 4px;
-    /*border: 2px solid #fff;*/
     pointer-events: none;
     margin-left: 0px;
     margin-top: 0px;
