@@ -1,5 +1,5 @@
 /*
-* angular-focus-manager 0.2.10
+* angular-focus-manager 0.3.0
 * Obogo (c) 2015
 * https://github.com/webux/angular-focusmanager
 * License: MIT.
@@ -29,29 +29,47 @@
             module = angular.module("fm", []);
         }
     })();
-    module.directive("focusElement", [ "focusManager", "focusQuery", function(focusManager, focusQuery) {
+    module.directive("focusAutofocus", [ "focusManager", "focusQuery", function(focusManager, focusQuery) {
+        var focusEls = [];
+        var focusElsCount = 0;
+        var unwatchChanges;
+        var timer;
+        function reset() {
+            unwatchChanges = null;
+            focusElsCount = 0;
+            clearInterval(timer);
+        }
         return {
             scope: true,
             link: function(scope, element, attr) {
-                var el = element[0], timer, off;
-                if (focusQuery.isAutofocus(el)) {
-                    off = scope.$watch(function() {
-                        off();
+                var el = element[0];
+                var focusIndex = !attr.focusAutofocus ? 0 : parseInt(attr.focusAutofocus, 10);
+                focusEls[focusIndex] = el;
+                focusElsCount += 1;
+                if (!unwatchChanges) {
+                    unwatchChanges = scope.$watch(function() {
+                        unwatchChanges();
+                        var tries = 0, maxTries = 1e3;
                         timer = setInterval(function() {
-                            if (focusQuery.isVisible(el)) {
-                                focusManager.focus(el);
-                                el.focus();
-                                if (document.activeElement === el) {
-                                    clearInterval(timer);
-                                    off();
+                            if (tries < maxTries) {
+                                var len = focusEls.length;
+                                for (var i = 0; i < len; i += 1) {
+                                    el = focusEls[i];
+                                    if (focusQuery.isVisible(el)) {
+                                        reset();
+                                        focusManager.focus(el);
+                                        el.focus();
+                                        break;
+                                    }
                                 }
-                            }
+                                tries += 1;
+                            } else {}
                         }, 10);
                     });
-                    scope.$on("$destroy", function() {
-                        clearInterval(timer);
-                    });
                 }
+                scope.$on("$destroy", function() {
+                    reset();
+                });
             }
         };
     } ]);
@@ -188,12 +206,13 @@
             var clientLeft = docElem.clientLeft || body.clientLeft || 0;
             var top = box.top - clientTop;
             var left = box.left - clientLeft;
-            return {
-                top: Math.round(top),
-                left: Math.round(left),
-                width: box.width,
-                height: box.height
+            var pos = {
+                top: Math.round(top) - 4,
+                left: Math.round(left) - 4,
+                width: box.width + 8,
+                height: box.height + 8
             };
+            return pos;
         }
         var _updateDisplay = function(el, activeElement) {
             var style = el.style;
