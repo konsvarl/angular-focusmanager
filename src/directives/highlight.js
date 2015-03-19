@@ -21,8 +21,13 @@ module.directive('focusHighlight', function (focusManager) {
         //var left = box.left + scrollLeft - clientLeft;
         var top = box.top - clientTop;
         var left = box.left - clientLeft;
-
-        return {top: Math.round(top), left: Math.round(left), width: box.width, height: box.height};
+        var pos =  {
+            top: Math.round(top) - 4,
+            left: Math.round(left) - 4,
+            width: box.width + 8,
+            height: box.height + 8
+        };
+        return pos;
     }
 
     var _updateDisplay = function (el, activeElement) {
