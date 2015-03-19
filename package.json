@@ -1,6 +1,6 @@
 {
   "name": "angular-focus-manager",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "filename": "angular-focusmanager",
   "packageName": "fm",
   "repository": "https://github.com/obogo/angular-focus-manager.git",
@@ -12,7 +12,6 @@
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-uglify": "^0.5.1",
-    "grunt-contrib-watch": "~0.5.2",
     "grunt-ng-annotate": "^0.3.2",
     "grunt-replace": "^0.7.8",
     "grunt-wrap": "~0.3.0"
