@@ -4,7 +4,8 @@ module.exports = function (grunt) {
         'jshint',
         'ngAnnotate',
         'replace',
-        'uglify'
+        'uglify',
+        'copy'
     ];
 
     grunt.initConfig({
@@ -26,30 +27,11 @@ module.exports = function (grunt) {
                 }
             }
         },
-        watch: {
-            scripts: {
-                files: ['src/**/*'],
-                tasks: tasks,
-                options: {
-                    spawn: false,
-                    debounceDelay: 1000,
-                    atBegin: true
-                }
-            }
-        },
-        bump: {
-            options: {
-                files: ['package.json'],
-                updateConfigs: [],
-//                commit: false,
-//                commitMessage: 'Release v%VERSION%',
-//                commitFiles: ['package.json'],
-//                createTag: false,
-//                tagName: 'v%VERSION%',
-//                tagMessage: 'Version %VERSION%',
-//                push: false,
-//                pushTo: 'upstream',
-//                gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
+        copy: {
+            build: {
+                files: [
+                    { expand: true, cwd: 'src/styles', src: ['*.css'], dest: 'build/css' }
+                ]
             }
         },
         ngAnnotate: {
@@ -96,8 +78,7 @@ module.exports = function (grunt) {
                     wrap: '<%= pkg.packageName %>'
                 },
                 files: {
-                    './build/<%= pkg.filename %>.js': ['./build/<%= pkg.filename %>.js'],
-//                    './build/<%= pkg.filename %>-lite.js': ['./build/<%= pkg.filename %>-lite.js']
+                    './build/<%= pkg.filename %>.js': ['./build/<%= pkg.filename %>.js']
                 }
             },
             build_min: {
@@ -107,8 +88,7 @@ module.exports = function (grunt) {
                     banner: '<%= banner %>'
                 },
                 files: {
-                    './build/<%= pkg.filename %>.min.js': ['./build/<%= pkg.filename %>.js'],
-//                    './build/<%= pkg.filename %>-lite.min.js': ['./build/<%= pkg.filename %>-lite.js']
+                    './build/<%= pkg.filename %>.min.js': ['./build/<%= pkg.filename %>.js']
                 }
             }
         }
@@ -119,12 +99,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-wrap');
     grunt.loadNpmTasks('grunt-ng-annotate');
     grunt.loadNpmTasks('grunt-replace');
-    grunt.loadNpmTasks('grunt-bump');
 
     grunt.registerTask('default', tasks);
-    grunt.registerTask('bump', ['bump']);
 
 };
