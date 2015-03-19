@@ -4,7 +4,7 @@
 ---
 
 **[Download](https://raw.githubusercontent.com/obogo/angular-focus-manager/master/build/angular-focusmanager.js)** (or **[Minified](https://raw.githubusercontent.com/obogo/angular-focusmanager/master/build/angular-focusmanager.min.js)**) **|**
-**[Guide](http://obogo.github.io/angular-focus-manager/) |**
+**[Guide](http://obogo.github.io/angular-focusmanager/) |**
 **[Help!](http://stackoverflow.com/questions/ask?tags=angularjs,focusmanager)**
 
 ---
@@ -65,7 +65,7 @@ When you're done, your setup should look similar to the following:
 
 The guide is the best way to help you get started using the Focus Manager for AngularJS.
 
-[Click here to view the guide](http://obogo.github.io/angular-focus-manager/)
+[Click here to view the guide](http://obogo.github.io/angular-focusmanager/)
 
 ####Article on "Creating the Focus Manager"
 ---
