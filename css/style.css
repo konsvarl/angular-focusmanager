@@ -140,33 +140,3 @@ code i * {
 .well {
     background: none;
 }
-
-*:focus {
-    outline: none !important;
-}
-
-*:focus {
-    outline: none !important;
-}
-
-.focus-highlight {
-    position: fixed;
-    -webkit-transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
-    -moz-transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
-    -o-transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
-    transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
-    outline: 2px solid #FF0000;
-    outline-offset: 4px;
-    pointer-events: none;
-    margin-left: 0px;
-    margin-top: 0px;
-    pointer-events: none;
-    z-index: 1000;
-}
-
-.focus-highlight.focus-highlight-disabled {
-    -webkit-transition: none;
-    -moz-transition: none;
-    -o-transition: none;
-    transition: none;
-}
