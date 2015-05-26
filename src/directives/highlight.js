@@ -54,17 +54,18 @@ module.directive('focusHighlight', function (focusManager) {
             var el = element[0];
             var targetEl;
             el.style.display = 'none';
-            document.addEventListener('focus', function (evt) {
+
+            var onFocus = function(evt) {
                 clearTimeout(timer);
                 targetEl = evt.target;
                 updateDisplay(el, evt.target);
-            }, true);
+            };
 
-            document.addEventListener('blur', function (evt) {
+            var onBlur = function(evt) {
                 timer = setTimeout(function () {
                     updateDisplay(el);
                 });
-            }, true);
+            };
 
             var updateTimer;
             var onUpdate = function () {
@@ -76,8 +77,17 @@ module.directive('focusHighlight', function (focusManager) {
                 }, 10);
             };
 
+            document.addEventListener('focus', onFocus, true);
+            document.addEventListener('blur', onBlur, true);
             window.addEventListener('scroll', onUpdate);
             window.addEventListener('resize', onUpdate);
+
+            scope.$on('$destroy', function(){
+                document.removeEventListener('focus', onFocus, true);
+                document.removeEventListener('blur', onBlur, true);
+                window.removeEventListener('scroll', onUpdate);
+                window.removeEventListener('resize', onUpdate);
+            });
         },
         template: '<div class="focus-highlight"></div>'
     };

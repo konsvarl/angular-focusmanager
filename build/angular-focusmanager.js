@@ -1,5 +1,5 @@
 /*
-* angular-focus-manager 0.3.0
+* angular-focus-manager 0.3.1
 * Obogo (c) 2015
 * https://github.com/webux/angular-focusmanager
 * License: MIT.
@@ -108,6 +108,7 @@
             var newCacheHtml = "";
             var tabIndex = el.getAttribute("tabindex") || 0;
             var outOfBody = false;
+            var focusInOff, focusEnabledOff, disabledOff;
             function init() {
                 scope.$on("focus::" + groupName, function() {
                     compile(groupName, el);
@@ -129,7 +130,7 @@
                         }
                         compile(groupName, el);
                     }, delay));
-                    dispatcher.on("focusin", utils.debounce(function(evt) {
+                    focusInOff = dispatcher.on("focusin", utils.debounce(function(evt) {
                         if (focusQuery.contains(el, evt.newTarget)) {
                             if (bound === false) {
                                 bound = true;
@@ -142,7 +143,7 @@
                             }
                         }
                     }, delay));
-                    dispatcher.on("enabled", function(evt) {
+                    focusEnabledOff = dispatcher.on("enabled", function(evt) {
                         var direction = focusKeyboard.direction;
                         if (document.activeElement === el) {
                             if (direction === "prev") {
@@ -157,7 +158,7 @@
                             el.setAttribute("tabindex", tabIndex);
                         }
                     });
-                    dispatcher.on("disabled", function() {
+                    disabledOff = dispatcher.on("disabled", function() {
                         setTimeout(function() {
                             if (document.activeElement === el || focusQuery.contains(el, document.activeElement)) {
                                 el.removeAttribute("tabindex");
@@ -192,6 +193,19 @@
             setTimeout(init, delay);
             focusQuery.setGroupId(el, groupName);
             compile(groupName, el);
+            scope.$on("$destroy", function() {
+                if (focusEnabledOff) {
+                    focusEnabledOff();
+                }
+                if (focusInOff) {
+                    focusInOff();
+                }
+                if (disabledOff) {
+                    disabledOff();
+                }
+                el.removeEventListener("focus", onFocus, true);
+                document.removeEventListener("blur", onDocumentBlur, true);
+            });
         }
         return {
             link: linker
@@ -236,16 +250,16 @@
                 var el = element[0];
                 var targetEl;
                 el.style.display = "none";
-                document.addEventListener("focus", function(evt) {
+                var onFocus = function(evt) {
                     clearTimeout(timer);
                     targetEl = evt.target;
                     updateDisplay(el, evt.target);
-                }, true);
-                document.addEventListener("blur", function(evt) {
+                };
+                var onBlur = function(evt) {
                     timer = setTimeout(function() {
                         updateDisplay(el);
                     });
-                }, true);
+                };
                 var updateTimer;
                 var onUpdate = function() {
                     element.addClass("focus-highlight-disabled");
@@ -255,8 +269,16 @@
                         element.removeClass("focus-highlight-disabled");
                     }, 10);
                 };
+                document.addEventListener("focus", onFocus, true);
+                document.addEventListener("blur", onBlur, true);
                 window.addEventListener("scroll", onUpdate);
                 window.addEventListener("resize", onUpdate);
+                scope.$on("$destroy", function() {
+                    document.removeEventListener("focus", onFocus, true);
+                    document.removeEventListener("blur", onBlur, true);
+                    window.removeEventListener("scroll", onUpdate);
+                    window.removeEventListener("resize", onUpdate);
+                });
             },
             template: '<div class="focus-highlight"></div>'
         };
@@ -887,7 +909,9 @@
             var returnVal = [];
             var i = 0, len = els.length;
             while (i < len) {
-                returnVal.push(els[i]);
+                if (isVisible(els[i])) {
+                    returnVal.push(els[i]);
+                }
                 i += 1;
             }
             returnVal = sort(returnVal, sortByGroupIndex);

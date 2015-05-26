@@ -55,6 +55,7 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
         var newCacheHtml = '';
         var tabIndex = el.getAttribute('tabindex') || 0;
         var outOfBody = false;
+        var focusInOff, focusEnabledOff, disabledOff;
 
         function init() {
             scope.$on('focus::' + groupName, function () {
@@ -82,7 +83,7 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
                     compile(groupName, el);
                 }, delay));
 
-                dispatcher.on('focusin', utils.debounce(function (evt) {
+                focusInOff = dispatcher.on('focusin', utils.debounce(function (evt) {
                     // if group contains target then bind keys
                     if (focusQuery.contains(el, evt.newTarget)) {
                         if (bound === false) {
@@ -97,7 +98,7 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
                     }
                 }, delay));
 
-                dispatcher.on('enabled', function (evt) {
+                focusEnabledOff = dispatcher.on('enabled', function (evt) {
                     var direction = focusKeyboard.direction;
                     if (document.activeElement === el) {
                         if (direction === 'prev') {
@@ -115,7 +116,7 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
 
                 });
 
-                dispatcher.on('disabled', function () {
+                disabledOff = dispatcher.on('disabled', function () {
                     setTimeout(function () {
                         if (document.activeElement === el || focusQuery.contains(el, document.activeElement)) {
                             el.removeAttribute('tabindex');
@@ -159,6 +160,20 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
 
         focusQuery.setGroupId(el, groupName);
         compile(groupName, el);
+
+        scope.$on('$destroy', function () {
+            if (focusEnabledOff) {
+                focusEnabledOff();
+            }
+            if (focusInOff) {
+                focusInOff();
+            }
+            if (disabledOff) {
+                disabledOff();
+            }
+            el.removeEventListener('focus', onFocus, true);
+            document.removeEventListener('blur', onDocumentBlur, true);
+        });
     }
 
     return {

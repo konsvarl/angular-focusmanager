@@ -62,7 +62,10 @@ module.service('focusQuery', function () {
         var returnVal = [];
         var i = 0, len = els.length;
         while (i < len) {
-            returnVal.push(els[i]);
+            // only add groups to the list that are currently visible
+            if(isVisible(els[i])) {
+                returnVal.push(els[i]);
+            }
             i += 1;
         }
 //        returnVal.sort(sortByGroupIndex);
