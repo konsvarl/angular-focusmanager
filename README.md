@@ -3,7 +3,7 @@
 ###Simple key and mouse navigation in your Angular JS application.
 ---
 
-**[Download](https://raw.githubusercontent.com/obogo/angular-focus-manager/master/build/angular-focusmanager.js)** (or **[Minified](https://raw.githubusercontent.com/obogo/angular-focusmanager/master/build/angular-focusmanager.min.js)**) **|**
+**[Download](https://raw.githubusercontent.com/obogo/angular-focusmanager/master/build/angular-focusmanager.js)** (or **[Minified](https://raw.githubusercontent.com/obogo/angular-focusmanager/master/build/angular-focusmanager.min.js)**) **|**
 **[Guide](http://obogo.github.io/angular-focusmanager/) |**
 **[Help!](http://stackoverflow.com/questions/ask?tags=angularjs,focusmanager)**
 
@@ -34,9 +34,9 @@ Have you ever tried navigating through a web application using the TAB key? You 
 
 * Clone this repository
 * Download the release (or minified)
-* Install via Bower: by running $ bower install angular-focus-manager from your console
+* Install via Bower: by running $ bower install angular-focusmanager from your console
 
-**(2)** Include angular-focus-manager.js (or angular-focus-manager.min.js) in your index.html, after including Angular itself
+**(2)** Include angular-focusmanager.js (or angular-focusmanager.min.js) in your index.html, after including Angular itself
 
 **(3)** Add "fm" to your main module's list of dependencies
 
@@ -48,7 +48,7 @@ When you're done, your setup should look similar to the following:
 <html ng-app="myApp">
 <head>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
-    <script src="js/angular-focus-manager.min.js"></script>
+    <script src="js/angular-focusmanager.min.js"></script>
     <script>
         var myApp = angular.module('myApp', ['fm']);
     </script>
@@ -72,4 +72,4 @@ The guide is the best way to help you get started using the Focus Manager for An
 
 Goes over some of the architecture on how the Focus Manager was designed and then implemented.
 
-[Click to read](https://github.com/obogo/angular-focus-manager/wiki/How-the-focus-manager-was-created)
+[Click to read](https://github.com/obogo/angular-focusmanager/wiki/How-the-focus-manager-was-created)
