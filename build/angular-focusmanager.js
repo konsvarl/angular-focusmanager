@@ -1,5 +1,5 @@
 /*
-* angular-focus-manager 0.3.2
+* angular-focus-manager 0.3.3
 * Obogo (c) 2015
 * https://github.com/webux/angular-focusmanager
 * License: MIT.
@@ -346,7 +346,9 @@
                         var elementId = stack.pop();
                         var el = focusQuery.getElement(elementId);
                         if (el) {
-                            focusManager.focus(el);
+                            setTimeout(function() {
+                                focusManager.focus(el);
+                            });
                         }
                     }
                 });
