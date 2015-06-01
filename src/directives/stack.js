@@ -10,7 +10,9 @@ module.directive('focusStack', function (focusManager, focusQuery) {
                     var elementId = stack.pop();
                     var el = focusQuery.getElement(elementId);
                     if (el) {
-                        focusManager.focus(el);
+                        setTimeout(function () {
+                            focusManager.focus(el);
+                        });
                     }
                 }
             });
