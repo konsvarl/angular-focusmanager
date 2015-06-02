@@ -13,7 +13,7 @@ module.exports = function (grunt) {
         banner: '/*\n' +
             '* <%= pkg.name %> <%= pkg.version %>\n' +
             '* Obogo (c) ' + new Date().getFullYear() + '\n' +
-            '* https://github.com/webux/<%= pkg.filename %>\n' +
+            '* https://github.com/obogo/<%= pkg.filename %>\n' +
             '* License: MIT.\n' +
             '*/\n',
         jshint: {
