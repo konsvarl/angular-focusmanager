@@ -43,7 +43,9 @@ module.service('focusKeyboard', function (focusManager) {
 
     function triggerClick(evt) {
         var activeElement = evt.target;
-        if(activeElement.type === 'text' || activeElement.type === 'textarea' || activeElement.getAttribute('contentEditable') === 'true') {
+
+        if (['email', 'number', 'password', 'search', 'text', 'textarea'].indexOf(activeElement.type) > -1 ||
+            activeElement.getAttribute('contentEditable') === 'true') {
             return; // if a text input of any kind, do nothing
         }
 
