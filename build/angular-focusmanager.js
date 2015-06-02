@@ -1,5 +1,5 @@
 /*
-* angular-focus-manager 0.3.3
+* angular-focus-manager 0.3.4
 * Obogo (c) 2015
 * https://github.com/webux/angular-focusmanager
 * License: MIT.
@@ -431,7 +431,7 @@
         }
         function triggerClick(evt) {
             var activeElement = evt.target;
-            if (activeElement.type === "text" || activeElement.type === "textarea" || activeElement.getAttribute("contentEditable") === "true") {
+            if ([ "email", "number", "password", "search", "text", "textarea" ].indexOf(activeElement.type) > -1 || activeElement.getAttribute("contentEditable") === "true") {
                 return;
             }
             evt.preventDefault();
