@@ -5,6 +5,7 @@ The project was created and is maintained by [Rob Taylor](https://github.com/rob
 
 List of code contributors (in no particular order):
 
+* [Rob Taylor](https://github.com/roboncode)
 * [Wes Jones](https://github.com/wesjones)
 * [Ian Lovett](https://github.com/ilovett)
 
