@@ -1,5 +1,5 @@
 /*
-* angular-focus-manager 0.3.4
+* angular-focus-manager 0.3.5
 * Obogo (c) 2015
 * https://github.com/obogo/angular-focusmanager
 * License: MIT.
@@ -253,11 +253,12 @@
                 var onFocus = function(evt) {
                     clearTimeout(timer);
                     targetEl = evt.target;
+                    element.removeClass("focus-highlight-inactive");
                     updateDisplay(el, evt.target);
                 };
                 var onBlur = function(evt) {
                     timer = setTimeout(function() {
-                        updateDisplay(el);
+                        element.addClass("focus-highlight-inactive");
                     });
                 };
                 var updateTimer;
@@ -559,6 +560,7 @@
         scope.triggerClick = triggerClick;
         scope.watchNextTabKey = watchNextTabKey;
         scope.unwatchNextTabKey = unwatchNextTabKey;
+        exports.keyboard = scope;
     } ]).run([ "focusKeyboard", function(focusKeyboard) {
         focusKeyboard.enable();
         focusKeyboard.enableTabKeys();
@@ -830,6 +832,7 @@
         scope.canReceiveFocus = canReceiveFocus;
         scope.enable = enable;
         scope.disable = disable;
+        exports.manager = scope;
     } ]);
     module.service("focusMouse", [ "focusManager", "focusQuery", function(focusManager, focusQuery) {
         var scope = this;
@@ -859,6 +862,7 @@
         scope.enabled = false;
         scope.enable = enable;
         scope.disable = disable;
+        exports.mouse = scope;
     } ]).run([ "focusMouse", function(focusMouse) {
         focusMouse.enable();
     } ]);
@@ -1173,6 +1177,7 @@
         scope.getChildGroups = getChildGroups;
         scope.contains = contains;
         scope.canReceiveFocus = canReceiveFocus;
+        exports.query = scope;
     });
     var utils = {};
     utils.addEvent = function(object, type, callback) {
@@ -1437,9 +1442,6 @@
         J.Mousetrap = m;
         "function" === typeof define && define.amd && define(m);
     })(window, document);
-    exports["consts"] = consts;
-    exports["module"] = module;
-    exports["utils"] = utils;
 })({}, function() {
     return this;
 }());

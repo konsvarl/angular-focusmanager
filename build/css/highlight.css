@@ -21,7 +21,11 @@
     border-radius: 4px;
 }
 
-.focus-highlight.focus-highlight-disabled {
+.focus-highlight-inactive {
+    box-shadow: 0 0 2pt 2pt #c8c8c8;
+}
+
+.focus-highlight-disabled {
     -webkit-transition: none;
     -moz-transition: none;
     -o-transition: none;

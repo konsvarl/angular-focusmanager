@@ -73,7 +73,7 @@ module.exports = function (grunt) {
                     compress: false,
                     preserveComments: 'some',
                     beautify: true,
-                    exportAll: true,
+                    exportAll: false,
                     banner: '<%= banner %>',
                     wrap: '<%= pkg.packageName %>'
                 },
