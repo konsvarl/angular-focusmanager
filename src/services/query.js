@@ -1,4 +1,4 @@
-/* global angular, module, utils, moduleName, consts */
+/* global angular, module, utils, moduleName, consts, exports */
 module.service('focusQuery', function () {
 
     var scope = this;
@@ -419,4 +419,5 @@ module.service('focusQuery', function () {
     scope.contains = contains;
     scope.canReceiveFocus = canReceiveFocus;
 
+    exports.query = scope;
 });

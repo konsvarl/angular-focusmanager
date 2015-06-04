@@ -1,4 +1,4 @@
-/* global angular, module, utils, moduleName */
+/* global angular, module, utils, moduleName, exports */
 module.service('focusKeyboard', function (focusManager) {
 
     var scope = this,
@@ -225,6 +225,8 @@ module.service('focusKeyboard', function (focusManager) {
     scope.triggerClick = triggerClick;
     scope.watchNextTabKey = watchNextTabKey;
     scope.unwatchNextTabKey = unwatchNextTabKey;
+
+    exports.keyboard = scope;
 
 }).run(function (focusKeyboard) {
     focusKeyboard.enable();

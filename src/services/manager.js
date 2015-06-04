@@ -417,4 +417,5 @@ module.service('focusManager', function (focusQuery, focusDispatcher) {
     scope.enable = enable;
     scope.disable = disable;
 
+    exports.manager = scope;
 });

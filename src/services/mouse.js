@@ -1,4 +1,4 @@
-/* global angular, module, utils, moduleName */
+/* global angular, module, utils, moduleName, exports */
 module.service('focusMouse', function (focusManager, focusQuery) {
 
     var scope = this;
@@ -44,6 +44,8 @@ module.service('focusMouse', function (focusManager, focusQuery) {
     scope.enabled = false;
     scope.enable = enable;
     scope.disable = disable;
+
+    exports.mouse = scope;
 
 }).run(function (focusMouse) {
     // enable FM by default
