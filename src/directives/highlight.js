@@ -58,12 +58,14 @@ module.directive('focusHighlight', function (focusManager) {
             var onFocus = function(evt) {
                 clearTimeout(timer);
                 targetEl = evt.target;
+                element.removeClass('focus-highlight-inactive');
                 updateDisplay(el, evt.target);
             };
 
             var onBlur = function(evt) {
                 timer = setTimeout(function () {
-                    updateDisplay(el);
+                    element.addClass('focus-highlight-inactive');
+                    //updateDisplay(el);
                 });
             };
 
