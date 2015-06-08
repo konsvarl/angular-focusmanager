@@ -37,6 +37,10 @@ module.service('focusManager', function (focusQuery, focusDispatcher) {
         }
     }
 
+    function getActiveElement() {
+        return focusQuery.getElement(focusQuery.getElementId(scope.activeElement));
+    }
+
     function canReceiveFocus(el) {
         return focusQuery.canReceiveFocus(el);
     }
@@ -46,10 +50,11 @@ module.service('focusManager', function (focusQuery, focusDispatcher) {
      */
     function next() {
         var groupId, elementId;
+        var activeElement = getActiveElement();
 
-        if (scope.activeElement) {
-            groupId = focusQuery.getParentId(scope.activeElement);
-            elementId = focusQuery.getElementId(scope.activeElement);
+        if (activeElement) {
+            groupId = focusQuery.getParentId(activeElement);
+            elementId = focusQuery.getElementId(activeElement);
             findNextElement(groupId, elementId);
         } else {
             findNextElement();
@@ -61,10 +66,11 @@ module.service('focusManager', function (focusQuery, focusDispatcher) {
      */
     function prev() {
         var groupId, elementId;
+        var activeElement = getActiveElement();
 
-        if (scope.activeElement) {
-            groupId = focusQuery.getParentId(scope.activeElement);
-            elementId = focusQuery.getElementId(scope.activeElement);
+        if (activeElement) {
+            groupId = focusQuery.getParentId(activeElement);
+            elementId = focusQuery.getElementId(activeElement);
             findPrevElement(groupId, elementId);
         } else {
             findPrevElement();
@@ -401,7 +407,7 @@ module.service('focusManager', function (focusQuery, focusDispatcher) {
 
     // :: Public API :: //
     scope.active = true;
-    scope.enabled = false;
+    scope.enabled = true;
     scope.activeElement = null;
 
     scope.focus = focus;
