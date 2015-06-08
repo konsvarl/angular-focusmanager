@@ -27,7 +27,7 @@ module.service('focusQuery', function () {
             isSelectable = isVisible(el);
         }
 
-        if(isSelectable) {
+        if (isSelectable) {
             isSelectable = !el.hasAttribute(consts.FOCUS_GROUP);
         }
         return isSelectable;
@@ -63,7 +63,7 @@ module.service('focusQuery', function () {
         var i = 0, len = els.length;
         while (i < len) {
             // only add groups to the list that are currently visible
-            if(isVisible(els[i])) {
+            if (isVisible(els[i])) {
                 returnVal.push(els[i]);
             }
             i += 1;
@@ -390,6 +390,20 @@ module.service('focusQuery', function () {
         return 0;
     }
 
+    /**
+     * Traverse up until a focus element is found
+     * @param el
+     * @returns {*}
+     */
+    function findFocusEl(el) {
+        var elementId = getElementId(el);
+        while (!elementId && el.nodeType !== 9) {
+            el = el.parentNode;
+            elementId = getElementId(el);
+        }
+        return el;
+    }
+
     scope.getElement = getElement;
     scope.getElementId = getElementId;
     scope.setElementId = setElementId;
@@ -418,6 +432,7 @@ module.service('focusQuery', function () {
     scope.getChildGroups = getChildGroups;
     scope.contains = contains;
     scope.canReceiveFocus = canReceiveFocus;
+    scope.findFocusEl = findFocusEl;
 
     exports.query = scope;
 });

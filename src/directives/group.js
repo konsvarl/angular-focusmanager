@@ -25,7 +25,9 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
         while (i < len) {
             elementName = elementId;
             focusQuery.setParentId(els[i], groupName);
-            focusQuery.setElementId(els[i], elementName);
+            if (!focusQuery.getElementId(els[i])) {
+                focusQuery.setElementId(els[i], elementName);
+            }
 
             var tabIndex = focusQuery.getTabIndex(els[i]);
             if (tabIndex === undefined || tabIndex === null) {
