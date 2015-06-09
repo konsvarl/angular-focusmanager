@@ -24,11 +24,7 @@ module.service('focusMouse', function (focusManager, focusQuery) {
      * @param evt
      */
     function onMouseDown(evt) {
-        var el = evt.target;
-        while(el.nodeName.toUpperCase() === 'SPAN') {
-            el = el.parentNode;
-        }
-
+        var el = focusQuery.findFocusEl(evt.target);
         if (focusManager.canReceiveFocus(el)) {
             focusManager.focus(el);
 

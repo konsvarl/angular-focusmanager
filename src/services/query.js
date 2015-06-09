@@ -396,10 +396,13 @@ module.service('focusQuery', function () {
      * @returns {*}
      */
     function findFocusEl(el) {
-        var elementId = getElementId(el);
-        while (!elementId && el.nodeType !== 9) {
+        var focusId = getElementId(el) || getTabIndex(el);
+        while (focusId === null || focusId === undefined) {
             el = el.parentNode;
-            elementId = getElementId(el);
+            if (el.nodeType === 9) {
+                return;
+            }
+            focusId = getElementId(el) || getTabIndex(el);
         }
         return el;
     }
