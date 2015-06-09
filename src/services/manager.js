@@ -29,7 +29,6 @@ module.service('focusManager', function (focusQuery, focusDispatcher) {
             scope.activeElement = el;
 
             if (el) {
-                //el.setAttribute('tabindex', '1');
                 el.focus();
             }
 
@@ -417,6 +416,7 @@ module.service('focusManager', function (focusQuery, focusDispatcher) {
     scope.off = off;
 
     // :: Protected API :: //
+    scope.getActiveElement = getActiveElement;
     scope.findPrevChildGroup = findPrevChildGroup;
     scope.findNextElement = findNextElement;
     scope.canReceiveFocus = canReceiveFocus;

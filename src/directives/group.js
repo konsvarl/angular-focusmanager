@@ -25,7 +25,7 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
         while (i < len) {
             elementName = elementId;
             focusQuery.setParentId(els[i], groupName);
-            if (!focusQuery.getElementId(els[i])) {
+            if(!focusQuery.getElementId(els[i])) {
                 focusQuery.setElementId(els[i], elementName);
             }
 
@@ -133,6 +133,7 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
         function onFocus(evt) {
             if (outOfBody) {
                 focusKeyboard.watchNextTabKey(groupName);
+                scope.activeElement = null;
                 outOfBody = false;
             } else {
                 focusManager.enable();
