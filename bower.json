@@ -5,6 +5,9 @@
     "authors": [
         "Rob Taylor <roboncode@gmail.com>"
     ],
+    "main": [
+      "build/angular-focusmanager.js"
+    ],
     "description": "Manages the activeElement using focus groups and elements",
     "keywords": [
         "obogo",
