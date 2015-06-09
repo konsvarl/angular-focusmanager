@@ -1,5 +1,5 @@
 /*
-* angular-focus-manager 0.3.5
+* angular-focusmanager 0.3.6
 * Obogo (c) 2015
 * https://github.com/obogo/angular-focusmanager
 * License: MIT.
@@ -84,7 +84,9 @@
             while (i < len) {
                 elementName = elementId;
                 focusQuery.setParentId(els[i], groupName);
-                focusQuery.setElementId(els[i], elementName);
+                if (!focusQuery.getElementId(els[i])) {
+                    focusQuery.setElementId(els[i], elementName);
+                }
                 var tabIndex = focusQuery.getTabIndex(els[i]);
                 if (tabIndex === undefined || tabIndex === null) {
                     focusQuery.setTabIndex(els[i], -1);
@@ -172,6 +174,7 @@
             function onFocus(evt) {
                 if (outOfBody) {
                     focusKeyboard.watchNextTabKey(groupName);
+                    scope.activeElement = null;
                     outOfBody = false;
                 } else {
                     focusManager.enable();
@@ -250,11 +253,15 @@
                 var el = element[0];
                 var targetEl;
                 el.style.display = "none";
+                var onFocusTimer;
                 var onFocus = function(evt) {
-                    clearTimeout(timer);
-                    targetEl = evt.target;
-                    element.removeClass("focus-highlight-inactive");
-                    updateDisplay(el, evt.target);
+                    clearTimeout(onFocusTimer);
+                    setTimeout(function() {
+                        clearTimeout(timer);
+                        targetEl = focusManager.getActiveElement() || evt.target;
+                        element.removeClass("focus-highlight-inactive");
+                        updateDisplay(el, targetEl);
+                    }, 10);
                 };
                 var onBlur = function(evt) {
                     timer = setTimeout(function() {
@@ -584,14 +591,18 @@
                 dispatcher.trigger("focusin", eventObj);
             }
         }
+        function getActiveElement() {
+            return focusQuery.getElement(focusQuery.getElementId(scope.activeElement));
+        }
         function canReceiveFocus(el) {
             return focusQuery.canReceiveFocus(el);
         }
         function next() {
             var groupId, elementId;
-            if (scope.activeElement) {
-                groupId = focusQuery.getParentId(scope.activeElement);
-                elementId = focusQuery.getElementId(scope.activeElement);
+            var activeElement = getActiveElement();
+            if (activeElement) {
+                groupId = focusQuery.getParentId(activeElement);
+                elementId = focusQuery.getElementId(activeElement);
                 findNextElement(groupId, elementId);
             } else {
                 findNextElement();
@@ -599,9 +610,10 @@
         }
         function prev() {
             var groupId, elementId;
-            if (scope.activeElement) {
-                groupId = focusQuery.getParentId(scope.activeElement);
-                elementId = focusQuery.getElementId(scope.activeElement);
+            var activeElement = getActiveElement();
+            if (activeElement) {
+                groupId = focusQuery.getParentId(activeElement);
+                elementId = focusQuery.getElementId(activeElement);
                 findPrevElement(groupId, elementId);
             } else {
                 findPrevElement();
@@ -820,13 +832,14 @@
             }
         }
         scope.active = true;
-        scope.enabled = false;
+        scope.enabled = true;
         scope.activeElement = null;
         scope.focus = focus;
         scope.prev = prev;
         scope.next = next;
         scope.on = on;
         scope.off = off;
+        scope.getActiveElement = getActiveElement;
         scope.findPrevChildGroup = findPrevChildGroup;
         scope.findNextElement = findNextElement;
         scope.canReceiveFocus = canReceiveFocus;
@@ -845,10 +858,7 @@
             utils.removeEvent(document, "mousedown", onMouseDown);
         }
         function onMouseDown(evt) {
-            var el = evt.target;
-            while (el.nodeName.toUpperCase() === "SPAN") {
-                el = el.parentNode;
-            }
+            var el = focusQuery.findFocusEl(evt.target);
             if (focusManager.canReceiveFocus(el)) {
                 focusManager.focus(el);
                 var parentId = focusQuery.getParentId(el);
@@ -1150,6 +1160,17 @@
             }
             return 0;
         }
+        function findFocusEl(el) {
+            var focusId = getElementId(el) || getTabIndex(el);
+            while (focusId === null || focusId === undefined) {
+                el = el.parentNode;
+                if (el.nodeType === 9) {
+                    return;
+                }
+                focusId = getElementId(el) || getTabIndex(el);
+            }
+            return el;
+        }
         scope.getElement = getElement;
         scope.getElementId = getElementId;
         scope.setElementId = setElementId;
@@ -1177,6 +1198,7 @@
         scope.getChildGroups = getChildGroups;
         scope.contains = contains;
         scope.canReceiveFocus = canReceiveFocus;
+        scope.findFocusEl = findFocusEl;
         exports.query = scope;
     });
     var utils = {};
