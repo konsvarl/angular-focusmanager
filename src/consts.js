@@ -1,3 +1,4 @@
+/* global exports */
 // These vars are auto-generated on the DOM
 var consts = {
     FOCUS_ELEMENT_ID: 'fm-id',
@@ -14,5 +15,10 @@ var consts = {
     FOCUS_ELEMENT: 'focus-element',
     FOCUS_ENABLED: 'focus-enabled',
     FOCUS_INDEX: 'focus-index',
-    SELECTABLE: 'A,SELECT,BUTTON,INPUT,TEXTAREA,*[focus-index]'
+    SELECTABLE: 'A,SELECT,BUTTON,INPUT,TEXTAREA,*[focus-index]',
+
+    GROUP_ELEMENTS_STRICT: '[{focusParentId}="{groupId}"][focus-index]:not([disabled]):not(.focus-ignore):not(.disabled)',
+    GROUP_ELEMENTS: '[{focusParentId}="{groupId}"]:not([disabled]):not(.focus-ignore):not(.disabled)'
 };
+
+exports.consts = consts;

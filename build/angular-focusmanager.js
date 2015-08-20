@@ -1,5 +1,5 @@
 /*
-* angular-focusmanager 0.3.7
+* angular-focusmanager 0.3.8
 * Obogo (c) 2015
 * https://github.com/obogo/angular-focusmanager
 * License: MIT.
@@ -19,8 +19,11 @@
         FOCUS_ELEMENT: "focus-element",
         FOCUS_ENABLED: "focus-enabled",
         FOCUS_INDEX: "focus-index",
-        SELECTABLE: "A,SELECT,BUTTON,INPUT,TEXTAREA,*[focus-index]"
+        SELECTABLE: "A,SELECT,BUTTON,INPUT,TEXTAREA,*[focus-index]",
+        GROUP_ELEMENTS_STRICT: '[{focusParentId}="{groupId}"][focus-index]:not([disabled]):not(.focus-ignore):not(.disabled)',
+        GROUP_ELEMENTS: '[{focusParentId}="{groupId}"]:not([disabled]):not(.focus-ignore):not(.disabled)'
     };
+    exports.consts = consts;
     var module;
     (function() {
         try {
@@ -38,6 +41,10 @@
             unwatchChanges = null;
             focusElsCount = 0;
             clearInterval(timer);
+        }
+        function focus(el) {
+            focusManager.focus(el);
+            el.focus();
         }
         return {
             scope: true,
@@ -57,14 +64,13 @@
                                     el = focusEls[i];
                                     if (focusQuery.isVisible(el)) {
                                         reset();
-                                        focusManager.focus(el);
-                                        el.focus();
+                                        setTimeout(focus, 100, el);
                                         break;
                                     }
                                 }
                                 tries += 1;
                             } else {}
-                        }, 10);
+                        }, 100);
                     });
                 }
                 scope.$on("$destroy", function() {
@@ -954,12 +960,12 @@
             var q, isStrict, els, returnVal, i, len;
             isStrict = isGroupStrict(groupId);
             if (isStrict) {
-                q = utils.supplant('[{focusParentId}="{groupId}"][focus-index]:not([disabled]):not(.disabled)', {
+                q = utils.supplant(consts.GROUP_ELEMENTS_STRICT, {
                     focusParentId: consts.FOCUS_PARENT_ID,
                     groupId: groupId
                 });
             } else {
-                q = utils.supplant('[{focusParentId}="{groupId}"]:not([disabled]):not(.disabled)', {
+                q = utils.supplant(consts.GROUP_ELEMENTS, {
                     focusParentId: consts.FOCUS_PARENT_ID,
                     groupId: groupId
                 });

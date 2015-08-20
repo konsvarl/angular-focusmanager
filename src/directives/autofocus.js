@@ -15,6 +15,13 @@ module.directive('focusAutofocus', function (focusManager, focusQuery) {
         clearInterval(timer);
     }
 
+    function focus(el) {
+        // set focus on the element using focus manager
+        focusManager.focus(el);
+        // also set focus directly on on element
+        el.focus();
+    }
+
     return {
         scope: true,
         link: function (scope, element, attr) {
@@ -49,10 +56,7 @@ module.directive('focusAutofocus', function (focusManager, focusQuery) {
                                 if (focusQuery.isVisible(el)) {
                                     // reset everything
                                     reset();
-                                    // set focus on the element using focus manager
-                                    focusManager.focus(el);
-                                    // also set focus directly on on element
-                                    el.focus();
+                                    setTimeout(focus, 100, el);
                                     // do not continue
                                     break;
                                 }
@@ -62,7 +66,7 @@ module.directive('focusAutofocus', function (focusManager, focusQuery) {
                         } else {
 
                         }
-                    }, 10);
+                    }, 100);
                 });
             }
 

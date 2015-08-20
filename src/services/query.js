@@ -101,12 +101,12 @@ module.service('focusQuery', function () {
 
         isStrict = isGroupStrict(groupId);
         if (isStrict) {
-            q = utils.supplant('[{focusParentId}="{groupId}"][focus-index]:not([disabled]):not(.disabled)', {
+            q = utils.supplant(consts.GROUP_ELEMENTS_STRICT, {
                 focusParentId: consts.FOCUS_PARENT_ID,
                 groupId: groupId
             });
         } else {
-            q = utils.supplant('[{focusParentId}="{groupId}"]:not([disabled]):not(.disabled)', {
+            q = utils.supplant(consts.GROUP_ELEMENTS, {
                 focusParentId: consts.FOCUS_PARENT_ID,
                 groupId: groupId
             });
