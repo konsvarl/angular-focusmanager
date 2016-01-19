@@ -1,6 +1,6 @@
 #Focus Manager for AngularJS
 
-#### Version: 0.3.9
+#### Version: 0.3.10
 
 ###Simple key and mouse navigation in your Angular JS application.
 ---
