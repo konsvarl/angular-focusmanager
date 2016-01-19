@@ -1,6 +1,6 @@
 /*
 * angular-focusmanager 0.3.9
-* Obogo (c) 2015
+* Obogo (c) 2016
 * https://github.com/obogo/angular-focusmanager
 * License: MIT.
 */

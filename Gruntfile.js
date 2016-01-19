@@ -85,7 +85,8 @@ module.exports = function (grunt) {
                 options: {
                     report: 'gzip',
                     wrap: '<%= pkg.packageName %>',
-                    banner: '<%= banner %>'
+                    banner: '<%= banner %>',
+                    sourceMap: true
                 },
                 files: {
                     './build/<%= pkg.filename %>.min.js': ['./build/<%= pkg.filename %>.js']
