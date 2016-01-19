@@ -1,11 +1,11 @@
 /*
-* angular-focusmanager 0.3.9
+* angular-focusmanager
+* Version: 0.3.9
 * Obogo (c) 2016
 * https://github.com/obogo/angular-focusmanager
 * License: MIT.
 */
 (function(exports, global) {
-    global["fm"] = exports;
     var consts = {
         FOCUS_ELEMENT_ID: "fm-id",
         FOCUS_GROUP_ID: "fm-group",
@@ -1470,6 +1470,7 @@
         J.Mousetrap = m;
         "function" === typeof define && define.amd && define(m);
     })(window, document);
+    global["fm"] = exports;
 })({}, function() {
     return this;
 }());
