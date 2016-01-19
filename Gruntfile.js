@@ -11,11 +11,12 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         banner: '/*\n' +
-            '* <%= pkg.name %> <%= pkg.version %>\n' +
-            '* Obogo (c) ' + new Date().getFullYear() + '\n' +
-            '* https://github.com/obogo/<%= pkg.filename %>\n' +
-            '* License: MIT.\n' +
-            '*/\n',
+        '* <%= pkg.name %>\n' +
+        '* Version: <%= pkg.version %>\n' +
+        '* Obogo (c) ' + new Date().getFullYear() + '\n' +
+        '* https://github.com/obogo/<%= pkg.filename %>\n' +
+        '* License: MIT.\n' +
+        '*/\n',
         jshint: {
             // define the files to lint
             files: ['src/**/*.js'],
@@ -30,7 +31,7 @@ module.exports = function (grunt) {
         copy: {
             build: {
                 files: [
-                    { expand: true, cwd: 'src/styles', src: ['*.css'], dest: 'build/css' }
+                    {expand: true, cwd: 'src/styles', src: ['*.css'], dest: 'build/css'}
                 ]
             }
         },
@@ -71,7 +72,7 @@ module.exports = function (grunt) {
                 options: {
                     mangle: false,
                     compress: false,
-                    preserveComments: 'some',
+                    preserveComments: false,
                     beautify: true,
                     exportAll: false,
                     banner: '<%= banner %>',
@@ -92,16 +93,30 @@ module.exports = function (grunt) {
                     './build/<%= pkg.filename %>.min.js': ['./build/<%= pkg.filename %>.js']
                 }
             }
+        },
+
+        bump: {
+            "options": {
+                files: ['build/angular-focusmanager.js', 'build/angular-focusmanager.min.js', 'README.md'],
+                updateConfigs: [],
+                commit: true,
+                commitMessage: 'release v%VERSION%',
+                commitFiles: ['build/angular-focusmanager.js', 'build/angular-focusmanager.min.js', 'README.md'],
+                createTag: true,
+                tagName: '%VERSION%',
+                tagMessage: '%VERSION%',
+                push: true,
+                pushTo: 'origin',
+                gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d',
+                globalReplace: false,
+                prereleaseName: false,
+                regExp: false
+            }
         }
     });
 
     // Load the plugin that provides the "uglify" task.
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-ng-annotate');
-    grunt.loadNpmTasks('grunt-replace');
+    require('load-grunt-tasks')(grunt);
 
     grunt.registerTask('default', tasks);
 
