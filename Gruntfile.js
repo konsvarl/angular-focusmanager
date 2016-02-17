@@ -85,7 +85,6 @@ module.exports = function (grunt) {
             build_min: {
                 options: {
                     report: 'gzip',
-                    wrap: '<%= pkg.packageName %>',
                     banner: '<%= banner %>',
                     sourceMap: true
                 },
@@ -97,11 +96,11 @@ module.exports = function (grunt) {
 
         bump: {
             "options": {
-                files: ['build/angular-focusmanager.js', 'build/angular-focusmanager.min.js', 'README.md'],
+                files: ['package.json', 'build/angular-focusmanager.js', 'build/angular-focusmanager.min.js', 'README.md'],
                 updateConfigs: [],
                 commit: true,
                 commitMessage: 'release v%VERSION%',
-                commitFiles: ['build/angular-focusmanager.js', 'build/angular-focusmanager.min.js', 'README.md'],
+                commitFiles: ['package.json', 'build/angular-focusmanager.js', 'build/angular-focusmanager.min.js', 'README.md'],
                 createTag: true,
                 tagName: '%VERSION%',
                 tagMessage: '%VERSION%',
