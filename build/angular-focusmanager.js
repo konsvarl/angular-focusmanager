@@ -114,7 +114,7 @@
             var bound = false;
             var cacheHtml = "";
             var newCacheHtml = "";
-            var tabIndex = el.getAttribute("tabindex") || 0;
+            var tabIndex = el.getAttribute(consts.TAB_INDEX) || 0;
             var outOfBody = false;
             var focusInOff, focusEnabledOff, disabledOff;
             function init() {
@@ -123,7 +123,7 @@
                 });
                 if (!focusQuery.getParentGroupId(el)) {
                     cacheHtml = el.innerHTML;
-                    el.setAttribute("tabindex", tabIndex);
+                    el.setAttribute(consts.TAB_INDEX, tabIndex);
                     scope.$watch(utils.debounce(function() {
                         newCacheHtml = el.innerHTML;
                         if (cacheHtml !== newCacheHtml) {
@@ -161,17 +161,17 @@
                             }
                         }
                         if (document.activeElement === el || focusQuery.contains(el, document.activeElement)) {
-                            el.removeAttribute("tabindex");
+                            el.removeAttribute(consts.TAB_INDEX);
                         } else {
-                            el.setAttribute("tabindex", tabIndex);
+                            el.setAttribute(consts.TAB_INDEX, tabIndex);
                         }
                     });
                     disabledOff = dispatcher.on("disabled", function() {
                         setTimeout(function() {
                             if (document.activeElement === el || focusQuery.contains(el, document.activeElement)) {
-                                el.removeAttribute("tabindex");
+                                el.removeAttribute(consts.TAB_INDEX);
                             } else {
-                                el.setAttribute("tabindex", tabIndex);
+                                el.setAttribute(consts.TAB_INDEX, tabIndex);
                             }
                         });
                     });
@@ -199,9 +199,11 @@
                 evt.stopPropagation();
                 compile(groupName, el);
             });
-            setTimeout(init, delay);
             focusQuery.setGroupId(el, groupName);
-            compile(groupName, el);
+            scope.$$postDigest(function() {
+                init();
+                compile(groupName, el);
+            });
             scope.$on("$destroy", function() {
                 if (focusEnabledOff) {
                     focusEnabledOff();

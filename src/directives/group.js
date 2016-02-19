@@ -55,7 +55,7 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
         var bound = false;
         var cacheHtml = '';
         var newCacheHtml = '';
-        var tabIndex = el.getAttribute('tabindex') || 0;
+        var tabIndex = el.getAttribute(consts.TAB_INDEX) || 0;
         var outOfBody = false;
         var focusInOff, focusEnabledOff, disabledOff;
 
@@ -68,7 +68,7 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
 
                 cacheHtml = el.innerHTML;
 
-                el.setAttribute('tabindex', tabIndex);
+                el.setAttribute(consts.TAB_INDEX, tabIndex);
 
                 scope.$watch(utils.debounce(function () {
                     newCacheHtml = el.innerHTML;
@@ -111,9 +111,9 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
                     }
 
                     if (document.activeElement === el || focusQuery.contains(el, document.activeElement)) {
-                        el.removeAttribute('tabindex');
+                        el.removeAttribute(consts.TAB_INDEX);
                     } else {
-                        el.setAttribute('tabindex', tabIndex);
+                        el.setAttribute(consts.TAB_INDEX, tabIndex);
                     }
 
                 });
@@ -121,9 +121,9 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
                 disabledOff = dispatcher.on('disabled', function () {
                     setTimeout(function () {
                         if (document.activeElement === el || focusQuery.contains(el, document.activeElement)) {
-                            el.removeAttribute('tabindex');
+                            el.removeAttribute(consts.TAB_INDEX);
                         } else {
-                            el.setAttribute('tabindex', tabIndex);
+                            el.setAttribute(consts.TAB_INDEX, tabIndex);
                         }
                     });
                 });
@@ -158,11 +158,13 @@ module.directive('focusGroup', function (focusManager, focusQuery, focusDispatch
             compile(groupName, el);
         });
 
-        // using timeout to allow all groups to digest before performing ParentGroup check
-        setTimeout(init, delay);
-
         focusQuery.setGroupId(el, groupName);
-        compile(groupName, el);
+
+        // Wait until after digest cycle has ended before initializing and compiling group
+        scope.$$postDigest(function(){
+            init();
+            compile(groupName, el);
+        });
 
         scope.$on('$destroy', function () {
             if (focusEnabledOff) {
